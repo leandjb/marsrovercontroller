@@ -15,13 +15,13 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class RoverControlTest {
+public class RoverControllerTest {
 
     @Mock
     RoverService service;
 
     @InjectMocks
-    private RoverControl controller;
+    private RoverController controller;
 
     @BeforeTestExecution
     public void setup(){
@@ -38,9 +38,21 @@ public class RoverControlTest {
     @Test
     public void enviarComandoNoPuedeSerNullTest() {
 
-        assertThrows(IllegalArgumentException.class, () ->{
+        assertThrows(IllegalArgumentException.class, () -> {
 
             controller.enviarComandos(null,null);
+            verify(service, never()).ejecutarComando(any());
+
+        });
+
+    }
+
+    @Test
+    public void verficarTipoDeComandoTest() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+
+            controller.enviarComandos(null,"ADF");
             verify(service, never()).ejecutarComando(any());
 
         });

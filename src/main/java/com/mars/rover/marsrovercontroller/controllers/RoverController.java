@@ -1,5 +1,6 @@
 package com.mars.rover.marsrovercontroller.controllers;
 
+import com.mars.rover.marsrovercontroller.enums.ComandoEnum;
 import com.mars.rover.marsrovercontroller.services.RoverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api")
-public class RoverControl {
+public class RoverController {
 
     private RoverService service;
 
@@ -20,11 +21,21 @@ public class RoverControl {
     }
 
     @RequestMapping("/{comando}")
-    public void enviarComandos(@RequestHeader HttpHeaders headers, @PathVariable String comando){
+    public void enviarComandos(@RequestHeader HttpHeaders headers, @PathVariable String comandos){
 
-        if (comando == null) {
+        if (comandos == null) {
             throw new IllegalArgumentException("El comando no puede ser null");
         }
-        service.ejecutarComando(comando);
+
+        for (int i = 0; i < comandos.length(); i++) {
+            char comando = comandos.charAt(i);
+
+            if(!ComandoEnum.existeElCodigo(comando)){
+                throw new IllegalArgumentException("El codigo no existe");
+            }
+
+        }
+
+        service.ejecutarComando(comandos);
     }
 }
