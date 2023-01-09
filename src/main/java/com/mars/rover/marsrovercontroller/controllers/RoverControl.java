@@ -22,6 +22,9 @@ public class RoverControl {
     @RequestMapping("/{comando}")
     public void enviarComandos(@RequestHeader HttpHeaders headers, @PathVariable String comando){
 
+        if (comando == null) {
+            throw new IllegalArgumentException("El comando no puede ser null");
+        }
         service.ejecutarComando(comando);
     }
 }
